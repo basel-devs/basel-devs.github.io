@@ -29,7 +29,7 @@
           // Post the code to the compiling server
           $.ajax({
             type: "GET",
-            url: "http://127.0.0.1:8181/command",
+            url: "http://test.lecbna.org:8181/command",
             data: { cmd :  $('#cmd')[0].value},
             success: function(script) {
               eval(script);
