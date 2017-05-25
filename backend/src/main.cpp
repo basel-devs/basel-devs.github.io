@@ -25,6 +25,8 @@ int main(int argc, char** argv) {
     handle_cmd() {}
      
     void operator()(express::request req, express::response res) {
+      res.append("Access-Control-Allow-Origin", "*"); 
+
       auto cmd = basel::url_unescape(req.query["cmd"]);
 
       std::string api_view{basel::api_tpl};
@@ -51,6 +53,7 @@ int main(int argc, char** argv) {
       bp::ipstream err;
       bp::child compiler(bp::shell, "em++", 
         "--std=c++14",
+        "--bind",
         temp_code_path.native(),
         "-o",
         temp_js_path.native(),

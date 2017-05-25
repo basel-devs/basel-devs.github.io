@@ -9,40 +9,76 @@
   <script src="semantic/dist/semantic.min.js"></script>
   <style type="text/css">
     body {
-      background-image: url(./gfx/basel[devs]background.png);
+      background-image: url(./gfx/basel[devs]background.jpg);
+      background-repeat: no-repeat;
+      background-attachment: scroll;
+      background-position: center center;
+      background-size: cover;
     }
     body > .grid {
       height: 100%;
     }
-    .image {
-      margin-top: -100px;
-    }
-    /*.column {
-      max-width: 450px;
-    }*/
+
   </style>
   <script type="text/javascript">
 
       $( document ).ready(function() {
-        
+        $( '#cmd_launcher' ).submit(function(event) {
+          event.preventDefault();
+
+          // Post the code to the compiling server
+          $.ajax({
+            type: "GET",
+            url: "http://127.0.0.1:8181/command",
+            data: { cmd :  $('#cmd')[0].value},
+            success: function(script) {
+              eval(script);
+              var result = Module.run_user_cmd();
+              $('#cmd_result').html(result);
+              $('#cmd_result_container').dimmer('show');
+              $('#cmd_result_container').click(function(event) {
+                $('#cmd_result_container').dimmer('hide');
+              });
+            }
+          });
+
+
+        });
       });
   </script>
 </head>
 <body>
 
-  <div class="ui middle aligned center aligned grid">
-    <div class="ten wide column">
-      <form class="ui form" action="http://127.0.0.1:8181/command">
-        <div class="ui left icon input " style="font-size: 4em; color:#669ad2; ">
-          <input value="basel[devs].help()" type="text" style="color:#669ad2; background-color: white;" name="cmd">
+  <div class="ui grid middle aligned center aligned">
+
+    <div class="two wide column">
+      <div style="
+background-image: url(gfx/logo.png);
+      background-repeat: no-repeat;
+      background-attachment: scroll;
+      background-position: center center;
+      background-size: contain;
+      width: 14em;
+      height: 14em;
+"></div>
+
+    </div>
+    <div class="twelve wide column">
+      <form class="ui form fluid" id="cmd_launcher" autocomplete="off">
+        <div class="ui massive left icon input fluid " style="color:#ffffff; font-size: 8em;">
+          <input value="basel[devs].help()" type="text" style="color:#ffffff; background-color: transparent; border-color:transparent;" id="cmd">
           <i class="terminal icon"></i>
         </div>
       </form>
-
-
     </div>
   </div>
 
+
+  <div class="ui page dimmer" id="cmd_result_container">
+    <div class="content">
+      <div class="center" id="cmd_result" style="font-size: 8em;"></div>
+    </div>
+  </div>
 
 </body>
 </html>
