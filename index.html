@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+  <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"></script>
+  <script src="semantic/dist/semantic.min.js"></script>
+  <style type="text/css">
+    body {
+      background-image: url(./gfx/basel[devs]background.png);
+    }
+    body > .grid {
+      height: 100%;
+    }
+    .image {
+      margin-top: -100px;
+    }
+    /*.column {
+      max-width: 450px;
+    }*/
+  </style>
+  <script type="text/javascript">
+
+      $( document ).ready(function() {
+        
+      });
+  </script>
+</head>
+<body>
+
+  <div class="ui middle aligned center aligned grid">
+    <div class="ten wide column">
+      <form class="ui form" action="http://127.0.0.1:8181/command">
+        <div class="ui left icon input " style="font-size: 4em; color:#669ad2; ">
+          <input value="basel[devs].help()" type="text" style="color:#669ad2; background-color: white;" name="cmd">
+          <i class="terminal icon"></i>
+        </div>
+      </form>
+
+
+    </div>
+  </div>
+
+
+</body>
+</html>
