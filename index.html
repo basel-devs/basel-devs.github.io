@@ -18,12 +18,17 @@
     body > .grid {
       height: 100%;
     }
-
+    
+    #cmd_launcher {
+      font-size: 8em;
+    }
+    
   </style>
   <script type="text/javascript">
 
       $( document ).ready(function() {
-        $( '#cmd_launcher' ).submit(function(event) {
+ var launch =
+function(event) {
           event.preventDefault();
 
           // Post the code to the compiling server
@@ -40,8 +45,10 @@
                 $('#cmd_result_container').dimmer('hide');
               });
             }
-          });
+          };
 
+        $( '#cmd_launcher' ).submit(launch);
+$( '#basel_logo' ).click(launch);
 
         });
       });
@@ -52,7 +59,7 @@
   <div class="ui grid middle aligned center aligned">
 
     <div class="two wide column">
-      <div style="
+      <div id="basel_logo" style="
 background-image: url(gfx/logo.png);
       background-repeat: no-repeat;
       background-attachment: scroll;
