@@ -58,7 +58,7 @@ void application::register_route(const http_verb verb,const routePath route,cons
 
 void application::listen(int port) {
 
-    HttpServer server(port,8,"cert.pem", "cert.key");
+    HttpServer server(port,8,"../certs/cert.pem", "../certs/privkey.pem");
 
     server.default_resource["GET"]=[&](std::shared_ptr<HttpServer::Response> res, std::shared_ptr<HttpServer::Request> req) {
         connect_route(http_verb::get,res,req);
