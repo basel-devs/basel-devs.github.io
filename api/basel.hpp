@@ -5,7 +5,7 @@
 #include <js/bind.hpp>
 #include <xxhr/xxhr.hpp>
 
-#include <nlohmann/json.hpp>
+//#include <nlohmann/json.hpp>
 
 /**
  * \brief The Basel simulation model
@@ -34,7 +34,7 @@ namespace basel_city {
 
     auto who() {
       using emscripten::val;
-      using nlohmann::json;
+      //using nlohmann::json;
       std::string members = val::global("all_members").as<std::string>();
 
       
