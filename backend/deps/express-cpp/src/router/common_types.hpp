@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <server_http.hpp>
+#include <server_https.hpp>
 #include <vector>
 
 #include <iostream>
@@ -12,7 +13,7 @@
 #include <type_traits>
 #include <boost/filesystem.hpp>
 
-typedef SimpleWeb::Server<SimpleWeb::HTTP> HttpServer;
+typedef SimpleWeb::Server<SimpleWeb::HTTPS> HttpServer;
 
 namespace express {
 
@@ -23,7 +24,7 @@ namespace express {
     typedef std::vector<std::string> regx_params;
     typedef std::map<regx_param,std::string> paramMap;
     typedef std::map<std::string,std::string> queryMap;
-    typedef SimpleWeb::Server<SimpleWeb::HTTP>::Content bodyContent;
+    typedef SimpleWeb::Server<SimpleWeb::HTTPS>::Content bodyContent;
 
     const std::string regxParam(":([-[:word:]]+)");
     const std::string regxURI("([-[:word:]]+)");

@@ -24,10 +24,14 @@ include_directories(${EXPRESS_HDR})
 include_directories(${SIMPLE_WEB_SERVER_HDR})
 
 
+#TODO: add requirement for version 1.0.1g (can it be done in one line?)
+find_package(OpenSSL)
+include_directories(SYSTEM ${OPENSSL_INCLUDE_DIR})
+
 file(GLOB_RECURSE EXPRESS_SRC "src/*.cpp")
 add_library(express-cpp ${EXPRESS_SRC})
 set_target_properties(express-cpp PROPERTIES VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
-target_link_libraries(express-cpp ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(express-cpp ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 
 if (UNIT_TESTS)
   enable_testing()
