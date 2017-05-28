@@ -28,7 +28,7 @@ namespace express {
     const std::string regxParam(":([-[:word:]]+)");
     const std::string regxURI("([-[:word:]]+)");
     const std::string regxQuery("(\\?|\\&)([^=]+)\\=([^&]+)");
-    const std::string regxQueryRemove("(\\?[^.]*)");
+    const std::string regxQueryRemove("(\\?.*)");
     enum class http_verb {
         del,
         get,
