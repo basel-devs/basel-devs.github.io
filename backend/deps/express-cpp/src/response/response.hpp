@@ -12,6 +12,7 @@ namespace express {
 
         void append(std::string header_name, std::string header_content);
         //set content type to HTML
+        void send(http_status status, htmlContent html);
         void send(htmlContent html);
         //void send(JSON) -- array or JSON ?
         //void send (Buffer) -- octet stream

@@ -18,35 +18,48 @@
     body > .grid {
       height: 100%;
     }
+
+    #cmd_launcher {
+      font-size: 4em;
+    }
+
+    @media screen and (max-width: 1280px) {
+      #cmd_launcher {
+        font-size: 1.5em;
+      }
+    }
     
   </style>
   <script type="text/javascript">
 
       $( document ).ready(function() {
- var launch =
-function(event) {
+        var launch = function(event) {
           event.preventDefault();
 
-          // Post the code to the compiling server
           $.ajax({
             type: "GET",
             url: "http://test.lecbna.org:8181/command",
             data: { cmd :  $('#cmd')[0].value},
-            success: function(script) {
-              eval(script);
-              var result = Module.run_user_cmd();
+            complete: function(xhr) {
+              var result = "";
+              if (xhr.status == 200) {
+                eval(xhr.responseText);
+                result = Module.run_user_cmd();
+              } else {
+                result = xhr.responseText;
+              }
+
               $('#cmd_result').html(result);
               $('#cmd_result_container').dimmer('show');
               $('#cmd_result_container').click(function(event) {
                 $('#cmd_result_container').dimmer('hide');
               });
             }
-          };
+          });
+        };
 
         $( '#cmd_launcher' ).submit(launch);
-$( '#basel_logo' ).click(launch);
-
-        });
+        $( '#basel_logo' ).click(launch);
       });
   </script>
 </head>
@@ -68,7 +81,7 @@ background-image: url(gfx/logo.png);
     </div>
     <div class="twelve wide column">
       <form class="ui form fluid" id="cmd_launcher" autocomplete="off">
-        <div class="ui massive left icon input fluid " style="color:#ffffff; font-size: 8em;">
+        <div class="ui massive left icon input fluid " style="color:#ffffff;">
           <input value="basel[devs].help()" type="text" style="color:#ffffff; background-color: transparent; border-color:transparent;" id="cmd">
           <i class="terminal icon"></i>
         </div>
@@ -79,9 +92,17 @@ background-image: url(gfx/logo.png);
 
   <div class="ui page dimmer" id="cmd_result_container">
     <div class="content">
-      <div class="center" id="cmd_result" style="font-size: 8em;"></div>
+      <pre class="center" id="cmd_result" style="font-size: 1em;"></pre>
     </div>
   </div>
+
+  <!-- Some JSONP requests to contact meetup without authentication --!> 
+<script> function the_members(members) { all_members = JSON.stringify(members); } </script>
+<script src="https://api.meetup.com/basel-devs/members?photo-host=public&callback=the_members&page=20&sig_id=91772662&sig=14205d2617b7eaa10c679722117541c3b92bc0b1"></script> 
+
+<script> function the_events(members) { all_events = JSON.stringify(members); } </script>
+<script src="https://api.meetup.com/basel-devs/events?photo-host=public&callback=the_events&page=20&sig_id=91772662&sig=ed81d72665e74dc1c537ff6786b764da9133d0a3"></script> 
+
 
 </body>
 </html>

@@ -30,6 +30,14 @@ void response::send(htmlContent html) {
         << "\r\n\r\n" << html;
 }
 
+void response::send(http_status status, htmlContent html) {
+
+    *_res << "HTTP/1.1 " << (int)status << " " << http_status_text[status] << "\r\n"
+        << "Content-Length: " << html.length() << "\r\n"
+        << "Content-Type:text/html;charset=utf-8" << _header_append
+        << "\r\n\r\n" << html;
+}
+
 void response::sendStatus(http_status status) {
     *_res << "HTTP/1.1 " << (int)status << " " << http_status_text[status] << "\r\n"
     << "Content-Length: " << http_status_text[status].length() << "\r\n"

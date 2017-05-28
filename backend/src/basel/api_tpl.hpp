@@ -27,7 +27,7 @@ struct devs_t {
   };
 
   std::string help() {
-    return "This is a full-fledge C++14 environment, <a href="">API here</a>.";
+    return "// This is a full-fledged C++14 environment, <a href="api/basel.hpp">Basel API here</a>.";
   }
 };
 
@@ -35,7 +35,7 @@ struct devs_t {
 struct basel_t {
 
   devs_t devs;
-  const devs_t operator[] (const citizens::devs_tag) const {
+  devs_t& operator[] (const citizens::devs_tag) {
     return devs;
   }
 

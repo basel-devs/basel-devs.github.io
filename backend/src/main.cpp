@@ -29,13 +29,13 @@ int main(int argc, char** argv) {
 
       auto cmd = basel::url_unescape(req.query["cmd"]);
 
-      std::string api_view{basel::api_tpl};
+      std::ifstream ifs_api{"api/basel.hpp"};
+      std::string api_view(std::istreambuf_iterator<char>{ifs_api}, std::istreambuf_iterator<char>{});
       mstch::config::escape = [](const std::string& str) { return str; };
       mstch::map context{
         {"cmd", cmd}
       };
       
-      //TODO: Compile cmd to js
       auto temp_code_path = bf::unique_path().replace_extension(".cpp");
       auto temp_js_path = bf::unique_path().replace_extension(".js");
       
@@ -57,16 +57,21 @@ int main(int argc, char** argv) {
         temp_code_path.native(),
         "-o",
         temp_js_path.native(),
+        "-Iapi/",
+        "-Iapi/xxhr/deps",
         bp::std_err > err);
 
       std::string compiler_out(std::istreambuf_iterator<char>{err}, std::istreambuf_iterator<char>{});
+      compiler.wait();
 
-      std::cout << compiler_out << std::endl;
+      std::cout << "Compiler said : " << compiler.exit_code() << " -- " << compiler_out << std::endl;
 
-//      std::ifstream ifsjs{temp_js_path.native().data()};
-//      std::string jscode(std::istreambuf_iterator<char>{ifsjs}, std::istreambuf_iterator<char>{});
-
-      res.sendFile(temp_js_path);
+      using express::http_status;
+      if (!bf::exists(temp_js_path)) {
+        res.send(http_status::http_not_found, compiler_out);
+      } else {
+        res.sendFile(temp_js_path);
+      }
     }
 
   };
