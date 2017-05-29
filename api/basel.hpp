@@ -1,6 +1,5 @@
 #include <string>
 #include <list>
-#include <iostream>
 #include <sstream>
 #include <locale>
 #include <codecvt> 
@@ -36,12 +35,7 @@ namespace basel_city {
       std::string members = converter.to_bytes( string_to_convert );
 
       json o;
-      try {
-        o = json::parse(members);
-        std::cout << "PARSED "<< std::endl;
-      } catch (const std::exception& e) {
-        std::cout << e.what() << std::endl;
-      }
+      o = json::parse(members);
 
       std::stringstream response_html;
       response_html << R"(
@@ -83,11 +77,7 @@ namespace basel_city {
       std::string events = converter.to_bytes( string_to_convert );
 
       json o;
-      try {
-        o = json::parse(events);
-      } catch (const std::exception& e) {
-        std::cout << e.what() << std::endl;
-      }
+      o = json::parse(events);
 
       std::stringstream response_html;
       response_html << R"(
