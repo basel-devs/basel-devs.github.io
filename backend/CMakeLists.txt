@@ -26,6 +26,7 @@ include_directories (AFTER ${Boost_INCLUDE_DIRS})
 # Shippedwith
 
 ## express
+hunter_add_package(OpenSSL)
 hunter_add_package(Boost COMPONENTS regex coroutine context thread filesystem system date_time)
 add_subdirectory(deps/express-cpp)
 include_directories(AFTER deps/express-cpp/src)
