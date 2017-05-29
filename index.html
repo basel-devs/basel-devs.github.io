@@ -44,14 +44,19 @@
   <script type="text/javascript">
 
       $( document ).ready(function() {
+
         var running = false;
         var launch = function(event) {
-          event.preventDefault();
+          if (event != null) {
+            event.preventDefault();
+          }
 
           if (running)
             return;
 
           running = true;
+          var cmd_to_launch = $("#cmd")[0].value;
+          window.location.hash = "#" + escape(cmd_to_launch)
 
           var loading = true;
           var fade_logo = function() {
@@ -70,7 +75,7 @@
           $.ajax({
             type: "GET",
             url: "https://127.0.0.1:8181/command",
-            data: { cmd :  $('#cmd')[0].value},
+            data: { cmd :  cmd_to_launch},
             complete: function(xhr) {
               running = false;
               loading = false;
@@ -93,6 +98,13 @@
 
         $( '#cmd_launcher' ).submit(launch);
         $( '#basel_logo' ).click(launch);
+
+        // Follow hashtag
+        var cmd_to_launch = unescape(window.location.hash.substr(1,window.location.hash.length));
+        if (cmd_to_launch != "") {
+          $("#cmd")[0].value = cmd_to_launch;
+          launch();
+        }
       });
   </script>
 </head>

@@ -49,6 +49,7 @@ namespace basel_city {
       )";
 
       for (auto& member : o["data"]) {
+        std::string img_src = (member["photo"]["thumb_link"].is_null()) ? "" : member["photo"]["thumb_link"]; 
         response_html << 
           R"(
             <div class="card">

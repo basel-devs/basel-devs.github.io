@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
           {"cmd", cmd}
         };
         
-        auto temp_code_path = bf::unique_path().replace_extension(".cpp");
+        auto temp_code_path = bf::path(CACHE_PATH) / bf::unique_path().replace_extension(".cpp");
         
         BOOST_SCOPE_EXIT(&temp_code_path) {
           // Cleanup created temp files
