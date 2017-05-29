@@ -39,12 +39,15 @@
         font-size: 1.5em;
       }
     }
-    
+
   </style>
+
   <script type="text/javascript">
 
+     
       $( document ).ready(function() {
 
+        /* Command Launcher */
         var running = false;
         var launch = function(event) {
           if (event != null) {
@@ -74,7 +77,7 @@
 
           $.ajax({
             type: "GET",
-            url: "https://test.lecbna.org:8181/command",
+            url: "https://127.0.0.1:8181/command",
             data: { cmd :  cmd_to_launch},
             complete: function(xhr) {
               running = false;
@@ -99,33 +102,44 @@
         $( '#cmd_launcher' ).submit(launch);
         $( '#basel_logo' ).click(launch);
 
-        // Follow hashtag
-        var cmd_to_launch = unescape(window.location.hash.substr(1,window.location.hash.length));
-        if (cmd_to_launch != "") {
-          $("#cmd")[0].value = cmd_to_launch;
-          launch();
-        }
+        // All loaded follow tag
+        var follow_hashtag = function() {
+          var cmd_to_launch = unescape(window.location.hash.substr(1,window.location.hash.length));
+          if (cmd_to_launch != "") {
+            $("#cmd")[0].value = cmd_to_launch;
+            launch();
+          }
+        };
+
+        window.onhashchange = follow_hashtag;
+
+        follow_hashtag();
       });
   </script>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/default.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
 </head>
 <body>
 
   <div class="ui grid middle aligned center aligned">
 
-    <div class="two wide column">
-      <div id="basel_logo"></div>
+    <div class="row">
+      <div class="two wide column">
+        <div id="basel_logo"></div>
+      </div>
+
+      <div class="twelve wide column">
+
+        <form class="ui form fluid" id="cmd_launcher" autocomplete="off">
+          <div class="ui massive left icon input fluid " style="color:#ffffff;">
+            <input value="basel[devs].help()" type="text" style="color:#ffffff; background-color: transparent; border-color:transparent;" id="cmd">
+            <i class="terminal icon"></i>
+          </div>
+        </form>
+
+      </div>
     </div>
 
-    <div class="twelve wide column">
-
-      <form class="ui form fluid" id="cmd_launcher" autocomplete="off">
-        <div class="ui massive left icon input fluid " style="color:#ffffff;">
-          <input value="basel[devs].help()" type="text" style="color:#ffffff; background-color: transparent; border-color:transparent;" id="cmd">
-          <i class="terminal icon"></i>
-        </div>
-      </form>
-
-    </div>
   </div>
 
 
