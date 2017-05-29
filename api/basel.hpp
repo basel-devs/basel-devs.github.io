@@ -25,20 +25,14 @@ namespace basel_city {
    */
   struct devs_t {
 
-    //TODO: Authenticate on meetup
-    //https://secure.meetup.com/oauth2/authorize?client_id=p2rsgro3qe2gnvp61fap9urid5&response_type=token&redirect_uri=https://basel-devs.github.io 
-
     auto who() {
       using emscripten::val;
       using nlohmann::json;
 
       std::wstring string_to_convert = val::global("all_members").as<std::wstring>();
       
-      //setup converter
       using convert_type = std::codecvt_utf8<wchar_t>;
       std::wstring_convert<convert_type, wchar_t> converter;
-
-      //use converter (.to_bytes: wstr->str, .from_bytes: str->wstr)
       std::string members = converter.to_bytes( string_to_convert );
 
       json o;
@@ -55,9 +49,6 @@ namespace basel_city {
       )";
 
       for (auto& member : o["data"]) {
-        std::string img_src = (member["photo"]["thumb_link"].is_null()) ? "" : member["photo"]["thumb_link"];
-        std::cout << member["name"] <<  " -- " << img_src  << std::endl;
-
         response_html << 
           R"(
             <div class="card">
@@ -86,17 +77,13 @@ namespace basel_city {
 
       std::wstring string_to_convert = val::global("all_events").as<std::wstring>();
       
-      //setup converter
       using convert_type = std::codecvt_utf8<wchar_t>;
       std::wstring_convert<convert_type, wchar_t> converter;
-
-      //use converter (.to_bytes: wstr->str, .from_bytes: str->wstr)
       std::string events = converter.to_bytes( string_to_convert );
 
       json o;
       try {
         o = json::parse(events);
-        std::cout << "PARSED "<< std::endl;
       } catch (const std::exception& e) {
         std::cout << e.what() << std::endl;
       }
@@ -164,7 +151,7 @@ std::string run_user_cmd() {
   basel_t basel;
 
   auto results = {{cmd}}
-  ; // <- for those who forgot it too often
+  ; // <- for those who forget it too often
 
   return results;
 }
