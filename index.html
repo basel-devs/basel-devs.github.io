@@ -19,6 +19,16 @@
       height: 100%;
     }
 
+    #basel_logo {
+      background-image: url(gfx/logo.png);
+      background-repeat: no-repeat;
+      background-attachment: scroll;
+      background-position: center center;
+      background-size: contain;
+      width: 14em;
+      height: 14em;
+    }
+
     #cmd_launcher {
       font-size: 4em;
     }
@@ -36,11 +46,24 @@
         var launch = function(event) {
           event.preventDefault();
 
+          var loading = true;
+          var fade_logo = function() {
+            if (loading) {
+              $( "#basel_logo" ).fadeToggle({
+                duration: 2000,
+                complete: fade_logo
+              });
+            }
+          };
+
+          fade_logo();
+
           $.ajax({
             type: "GET",
             url: "https://test.lecbna.org:8181/command",
             data: { cmd :  $('#cmd')[0].value},
             complete: function(xhr) {
+              loading = false;
               var result = "";
               if (xhr.status == 200) {
                 eval(xhr.responseText);
@@ -68,24 +91,18 @@
   <div class="ui grid middle aligned center aligned">
 
     <div class="two wide column">
-      <div id="basel_logo" style="
-background-image: url(gfx/logo.png);
-      background-repeat: no-repeat;
-      background-attachment: scroll;
-      background-position: center center;
-      background-size: contain;
-      width: 14em;
-      height: 14em;
-"></div>
-
+      <div id="basel_logo"></div>
     </div>
+
     <div class="twelve wide column">
+
       <form class="ui form fluid" id="cmd_launcher" autocomplete="off">
         <div class="ui massive left icon input fluid " style="color:#ffffff;">
           <input value="basel[devs].help()" type="text" style="color:#ffffff; background-color: transparent; border-color:transparent;" id="cmd">
           <i class="terminal icon"></i>
         </div>
       </form>
+
     </div>
   </div>
 
