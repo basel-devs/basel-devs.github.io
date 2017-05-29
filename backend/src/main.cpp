@@ -70,11 +70,16 @@ int main(int argc, char** argv) {
         bp::child compiler(bp::shell, "em++", 
           "--std=c++14",
           "--bind",
+          "-O2",
+          "-g0",
           temp_code_path.native(),
           "-o",
           cache_file.native(),
           "-Iapi/",
           "-Iapi/xxhr/deps",
+          "-s",
+          "--memory-init-file",
+          "0",
           bp::std_err > err);
 
         std::string compiler_out(std::istreambuf_iterator<char>{err}, std::istreambuf_iterator<char>{});
