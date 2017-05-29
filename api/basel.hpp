@@ -1,31 +1,27 @@
 #include <string>
 #include <list>
 #include <iostream>
+#include <sstream>
+#include <locale>
+#include <codecvt> 
 
 #include <js/bind.hpp>
 #include <xxhr/xxhr.hpp>
 
-//#include <nlohmann/json.hpp>
+#include <nlohmann/json.hpp>
+
 
 /**
  * \brief The Basel simulation model
  */ 
 namespace basel_city {
 
-  /**
-   * \brief Represents a basel developer 
-   */
-  struct dev {
-    std::size_t meetup_id;
-    std::string name;
-  };
-
   namespace citizens {
     struct devs_tag{};
   };
 
   /**
-   * \brief A type centralizing information of devs.
+   * \brief A type centralizing information for basel[devs].
    */
   struct devs_t {
 
@@ -34,18 +30,109 @@ namespace basel_city {
 
     auto who() {
       using emscripten::val;
-      //using nlohmann::json;
-      std::string members = val::global("all_members").as<std::string>();
+      using nlohmann::json;
 
+      std::wstring string_to_convert = val::global("all_members").as<std::wstring>();
       
+      //setup converter
+      using convert_type = std::codecvt_utf8<wchar_t>;
+      std::wstring_convert<convert_type, wchar_t> converter;
 
-      return members;//R"(<div class="ui loader"></div>)";
+      //use converter (.to_bytes: wstr->str, .from_bytes: str->wstr)
+      std::string members = converter.to_bytes( string_to_convert );
+
+      json o;
+      try {
+        o = json::parse(members);
+        std::cout << "PARSED "<< std::endl;
+      } catch (const std::exception& e) {
+        std::cout << e.what() << std::endl;
+      }
+
+      std::stringstream response_html;
+      response_html << R"(
+      <div class="ui cards">
+      )";
+
+      for (auto& member : o["data"]) {
+        std::string img_src = (member["photo"]["thumb_link"].is_null()) ? "" : member["photo"]["thumb_link"];
+        std::cout << member["name"] <<  " -- " << img_src  << std::endl;
+
+        response_html << 
+          R"(
+            <div class="card">
+              <div class="content">
+                <div class="header">
+                  <img class="ui avatar image" src=")" << img_src << R"(">
+                  <span>)" << member["name"].get<std::string>() << R"(</span> 
+                </div>
+                <div class="meta">
+                  )" << member["city"].get<std::string>() << R"(
+                </div>
+              </div>
+            </div>
+            )";
+      }
+
+      response_html << R"(
+      </div>)";
+
+      return response_html.str();
     }
 
     auto when() {
       using emscripten::val;
-      std::string events= val::global("all_events").as<std::string>();
-      return events;//R"(<div class="ui loader"></div>)";
+      using nlohmann::json;
+
+      std::wstring string_to_convert = val::global("all_events").as<std::wstring>();
+      
+      //setup converter
+      using convert_type = std::codecvt_utf8<wchar_t>;
+      std::wstring_convert<convert_type, wchar_t> converter;
+
+      //use converter (.to_bytes: wstr->str, .from_bytes: str->wstr)
+      std::string events = converter.to_bytes( string_to_convert );
+
+      json o;
+      try {
+        o = json::parse(events);
+        std::cout << "PARSED "<< std::endl;
+      } catch (const std::exception& e) {
+        std::cout << e.what() << std::endl;
+      }
+
+      std::stringstream response_html;
+      response_html << R"(
+      <div class="ui cards">
+      )";
+
+      for (auto& event : o["data"]) {
+
+        response_html << 
+          R"(
+            <div class="card">
+              <div class="content">
+                <div class="header">
+                  )" << event["name"].get<std::string>() << R"(
+                </div>
+                <div class="meta">
+                </div>
+                <div class="description">
+                  <a href=")" << event["link"].get<std::string>() << R"(" target="_blank">When &amp; Where ?</a>
+                </div>
+              </div>
+              <div class="extra content">
+                <i class="user icon"></i>
+                )" << event["yes_rsvp_count"].get<int>() << R"( Going
+              </div>
+            </div>
+            )";
+      }
+
+      response_html << R"(
+      </div>)";
+
+      return response_html.str();
     }
 
     auto why() {
@@ -53,7 +140,7 @@ namespace basel_city {
     }
 
     auto help() {
-      return R"(// This is a full-fledged C++14 environment, <a href="api/basel.hpp">Basel API here</a>.)";
+      return R"(// This is a full-fledged <span style="color: green;">C++14</span> environment, <a href="api/basel.hpp">Basel API here</a>.)";
     }
   };
 
