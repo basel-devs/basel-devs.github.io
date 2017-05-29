@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
   <script
     src="https://code.jquery.com/jquery-3.1.1.min.js"
@@ -43,16 +44,24 @@
   <script type="text/javascript">
 
       $( document ).ready(function() {
+        var running = false;
         var launch = function(event) {
           event.preventDefault();
+
+          if (running)
+            return;
+
+          running = true;
 
           var loading = true;
           var fade_logo = function() {
             if (loading) {
               $( "#basel_logo" ).fadeToggle({
-                duration: 2000,
+                duration: 1300,
                 complete: fade_logo
               });
+            } else {
+              $( "#basel_logo" ).fadeIn();
             }
           };
 
@@ -60,16 +69,17 @@
 
           $.ajax({
             type: "GET",
-            url: "https://test.lecbna.org:8181/command",
+            url: "https://127.0.0.1:8181/command",
             data: { cmd :  $('#cmd')[0].value},
             complete: function(xhr) {
+              running = false;
               loading = false;
               var result = "";
               if (xhr.status == 200) {
                 eval(xhr.responseText);
                 result = Module.run_user_cmd();
               } else {
-                result = xhr.responseText;
+                result = "<pre>" + xhr.responseText + "</pre>";
               }
 
               $('#cmd_result').html(result);
@@ -109,17 +119,19 @@
 
   <div class="ui page dimmer" id="cmd_result_container">
     <div class="content">
-      <pre class="center" id="cmd_result" style="font-size: 1em;"></pre>
+      <div class="ui grid middle aligned center aligned">
+        <div class="twelve wide column center" id="cmd_result" style="font-size: 1em; height: 80vh;">
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- Some JSONP requests to contact meetup without authentication --!> 
-<script> function the_members(members) { all_members = JSON.stringify(members); } </script>
-<script src="https://api.meetup.com/basel-devs/members?photo-host=public&callback=the_members&page=20&sig_id=91772662&sig=14205d2617b7eaa10c679722117541c3b92bc0b1"></script> 
+  <script> function the_members(members) { all_members = JSON.stringify(members); } </script>
+  <script src="https://api.meetup.com/basel-devs/members?photo-host=secure&page=20&sig_id=91772662&sig=386ccccc442873a4896b71373410c0e90d65cdce&callback=the_members"></script> 
 
-<script> function the_events(members) { all_events = JSON.stringify(members); } </script>
-<script src="https://api.meetup.com/basel-devs/events?photo-host=public&callback=the_events&page=20&sig_id=91772662&sig=ed81d72665e74dc1c537ff6786b764da9133d0a3"></script> 
-
+  <script> function the_events(events) { all_events = JSON.stringify(events); } </script>
+  <script src="https://api.meetup.com/basel-devs/events?photo-host=secure&page=20&sig_id=91772662&sig=68524aa6e592601e243db53b7b6b7930e693bd7b&callback=the_events"></script>
 
 </body>
 </html>
