@@ -3,6 +3,7 @@
 
 #include <sstream>
 #include <xxhr/xxhr.hpp>
+#include <js/htmlencode.hpp>
 
 auto basel::devs_t::help() const {
 
@@ -21,8 +22,9 @@ auto basel::devs_t::help() const {
         std::stringstream html_help;
 
         html_help <<
-          R"(<pre><code id="help_api" class="cpp hljs">)"
-          << resp.text << 
+          R"(<h1>This is a full <span style="color:green">C++14</span> environment : compile as you type...</h1>
+             <pre><code id="help_api" class="cpp hljs">)"
+          << js::htmlencode(resp.text) << 
           R"(</code></pre>)"
         ;
         
