@@ -40,6 +40,42 @@
       }
     }
 
+    #cmd_result {
+      font-size: 0.9em;
+      text-align:left;
+    }
+
+ /*   @media screen and (max-width: 1280px) {
+      #cmd_result {
+        font-size: 0.6em;
+      }
+    }*/
+
+    /* Disabling scrollbar */
+    .hide-scroll {
+      height: 95vh;
+      overflow: hidden;
+    }
+
+    .viewport {
+      overflow-x:none;
+      overflow-y:auto;
+
+      /* Make sure the inner div is not larger than the container
+       * so that we have room to scroll.
+       */
+      max-height: 100%;
+
+      /* Pick an arbitrary margin/padding that should be bigger
+       * than the max width of all the scroll bars across
+       * the devices you are targeting.
+       * padding = -margin
+       */
+      margin-right: -100px;
+      padding-right: 100px;
+    }
+
+
   </style>
 
   <script type="text/javascript">
@@ -146,7 +182,10 @@
   <div class="ui page dimmer" id="cmd_result_container">
     <div class="content">
       <div class="ui grid middle aligned center aligned">
-        <div class="twelve wide column center" id="cmd_result" style="font-size: 1em; height: 80vh;">
+        <div class="twelve wide column center" >
+          <div class="hide-scroll">
+            <div class="viewport" id="cmd_result"></div>
+          </div>
         </div>
       </div>
     </div>
