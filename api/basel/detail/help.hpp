@@ -9,10 +9,27 @@ auto basel::devs_t::help() const {
 
   using namespace xxhr;
 
+  auto loading_msg = [](bool failed, const std::string& txt) {
+    std::stringstream ss;
+
+    ss << R"(
+    <div class="ui icon message massive" )" << ((failed) ? R"(style="color: red;")" : "") << R"(>
+      <i class=")" << ((failed) ? "doctor icon" : "notched circle loading icon") << R"("></i>
+      <div class="content">
+        <div class="header">
+          Loading
+        </div>
+        <p>)" << txt << R"(</p>
+      </div>
+    </div>)";
+    
+    return ss.str();
+  };
+
   GET( 
     Url{"https://raw.githubusercontent.com/basel-devs/"
         "basel-devs.github.io/master/api/basel/basel.hpp"}, 
-    on_response = [](auto&& resp) {
+    on_response = [&loading_msg](auto&& resp) {
 
       using emscripten::val;
 
@@ -33,22 +50,12 @@ auto basel::devs_t::help() const {
 
         val::global("hljs").call<val>("highlightBlock", dom_help_api);
       } else {
-        val::global("$")(cmd_result).call<val>("html", std::string{R"(<span style="color:red;">Error Loading Resource</span>)"});
+        val::global("$")(cmd_result).call<val>("html", loading_msg(true, "C++ API could not be loaded ! "));
       }
     }
   );
 
-  return R"(
-  <div class="ui icon message massive">
-    <i class="notched circle loading icon"></i>
-    <div class="content">
-      <div class="header">
-        Please wait 
-      </div>
-      <p>Retrieving the C++ API.</p>
-    </div>
-  </div>
-  )";
+  return loading_msg(false, "Retrieving C++ API");
 }
 
 #endif
