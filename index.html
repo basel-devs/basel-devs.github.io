@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
-  <script
-    src="https://code.jquery.com/jquery-3.1.1.min.js"
+  <link rel="stylesheet" type="text/css" href="gfx/family=Lato:400,700,400italic,700italic.css">
+  <script src="gfx/jquery-3.1.1.min.js"
     integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
     crossorigin="anonymous"></script>
   <script src="semantic/dist/semantic.min.js"></script>
@@ -187,7 +187,7 @@
 
   <!-- Some JSONP requests to contact meetup without authentication --!> 
   <script> function the_members(members) { all_members = JSON.stringify(members); } </script>
-  <script src="https://api.meetup.com/basel-devs/members?photo-host=secure&page=20&sig_id=91772662&sig=386ccccc442873a4896b71373410c0e90d65cdce&callback=the_members"></script> 
+  <script src="https://api.meetup.com/basel-devs/members?photo-host=public&page=50&sig_id=91772662&sig=a595ad4e1e2646ee3d74d316bdda3d98015dc671&callback=the_members"></script> 
 
   <script> function the_events(events) { all_events = JSON.stringify(events); } </script>
   <script src="https://api.meetup.com/basel-devs/events?photo-host=secure&page=20&sig_id=91772662&sig=68524aa6e592601e243db53b7b6b7930e693bd7b&callback=the_events"></script>
