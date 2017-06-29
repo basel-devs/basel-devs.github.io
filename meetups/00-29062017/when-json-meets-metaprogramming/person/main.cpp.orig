@@ -1,0 +1,41 @@
+#include <iostream>
+
+#include <person.hpp>
+#include <bad_from_json.hpp>
+#include <good_from_json.hpp>
+
+int main(int argc, const char* argv[]) {
+
+  using namespace bs;
+ 
+  auto some_input = R"(
+  {
+    "name" : "Ferran Adrià",
+    "address" : "17480 Girona, Spain",
+    "age" : 55,
+    "job" : {
+      "struct" : "bs::cook",
+      "michelin_stars" : 3
+    }
+  }
+  )";
+
+
+  {
+    auto p = bs::from_json(bs::json::parse(some_input));
+    std::cout << "We are looking at " << p.name << " aged of " << p.age << std::endl;
+  }
+
+<<<<<<< f1461910f8d2892cd9490f432d557555e8de3eb2
+=======
+  {
+    auto p = pre::json::from_json<person>(bs::json::parse(some_input));
+    std::cout << "We are looking at " << p.name << " aged of " << p.age << ", increment age ? " << std::endl;
+    std::cin >> p.age;
+
+    std::cout << pre::json::to_json(p).dump(2) << std::endl;
+  }
+
+>>>>>>> json with metaprogramming.
+  return 0;
+}
